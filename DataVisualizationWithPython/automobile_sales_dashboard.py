@@ -154,34 +154,35 @@ def update_output_container(selected_statistics, input_year):
         )
             
 # Plot 2 Total Monthly Automobile sales using line chart.
-        total_monthly_sales = data.groupby(['Date'])['Automobile_Sales'].mean().reset_index()
+        total_monthly_sales = data.groupby(['Month'])['Automobile_Sales'].mean().reset_index()
         Y_chart2 = dcc.Graph(
             figure = px.line(
                 total_monthly_sales,
-                x = 'Date',
+                x = 'Month',
                 y = 'Automobile_Sales',
                 title = 'Total Monthly Sales in the year {}'.format(input_year)
             )
         )
 
 # Plot bar chart for average number of vehicles sold during the given year
-        avr_vdata=yearly_data.groupby(['Year'])['Automobile_Sales'].mean().reset_index()
+        avr_vdata=yearly_data.groupby(['Vehicle_Type'])['Automobile_Sales'].mean().reset_index()
         Y_chart3 = dcc.Graph( 
             figure=px.bar(
                 avr_vdata,
+                x = 'Vehicle_Type',
                 y = 'Automobile_Sales',
-                x = 'Year',
+                color = 'Vehicle_Type',
                 title='Average Vehicles Sold by Vehicle Type in the year {}'.format(input_year)
             )
         )
 
 # Total Advertisement Expenditure for each vehicle using pie chart
-        exp_data=yearly_data.groupby(['Vehicle_Type'])['Advertising_Expenditure'].sum().reset_index()
+        exp_data=yearly_data.groupby('Vehicle_Type')['Advertising_Expenditure'].sum().reset_index()
         Y_chart4 = dcc.Graph(
             figure = px.pie(
                 exp_data,
-                values = exp_data['Advertising_Expenditure'],
                 names = exp_data['Vehicle_Type'],
+                values = exp_data['Advertising_Expenditure'],
                 title='Total Advertisement Expenditure for Each Vehicle in {}'.format(input_year)
             )
         )
